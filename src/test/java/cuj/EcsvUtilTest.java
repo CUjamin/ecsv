@@ -18,10 +18,15 @@ public class EcsvUtilTest {
         List<String[]> stringList = new LinkedList<>();
         String[] header = {"name","age","id"};
         stringList.add(header);
-        String[] strings = {"name","20","a1s2"};
-        stringList.add(strings);
+        String[] xiaoming = {"xiaoming","20","a1s2"};
+        stringList.add(xiaoming);
+        String[] xiaozzhang = {"xiaozhang","21","wwwww"};
+        stringList.add(xiaozzhang);
 
-        Student student = EcsvUtil.parse2Object(stringList,Student.class);
-        System.out.println(student);
+        List<Student> studentList = EcsvUtil.parse2Object(stringList,Student.class);
+        System.out.println(studentList.size());
+        for(Student student:studentList){
+            System.out.println(student);
+        }
     }
 }

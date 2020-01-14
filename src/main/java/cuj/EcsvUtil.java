@@ -10,10 +10,11 @@ import java.util.*;
  */
 public class EcsvUtil {
     private static final String SET = "set";
-    public static <T> T parse2Object(List<String[]> contentList,Class<T> clazz)throws Exception{
-        T object = clazz.getConstructor().newInstance();
+    public static <T> List<T> parse2Object(List<String[]> contentList,Class<T> clazz)throws Exception{
+        List<T> objectList = new LinkedList<>();
+
         if(1>=contentList.size()){
-            return object;
+            return objectList;
         }
         Map<String,Method> fieldToMethodMap = fieldToMethodMap(clazz);
 
@@ -22,20 +23,23 @@ public class EcsvUtil {
         Map<String,Integer> csvHeaderMap = csvHeaderMap(header,clazz);
         while (contentIterator.hasNext()){
             String[] content = contentIterator.next();
+            T object = clazz.getConstructor().newInstance();
             for(Map.Entry<String,Method> fieldToMethodMapEntry:fieldToMethodMap.entrySet()){
                 try {
                     String parameterType = fieldToMethodMapEntry.getValue().getParameterTypes()[0].toString();
-                    if(parameterType.equalsIgnoreCase("int")){
+                    if("int".equalsIgnoreCase(parameterType)){
                         fieldToMethodMapEntry.getValue().invoke(object, Integer.parseInt(content[csvHeaderMap.get(fieldToMethodMapEntry.getKey())]));
                     }else {
                         fieldToMethodMapEntry.getValue().invoke(object, content[csvHeaderMap.get(fieldToMethodMapEntry.getKey())]);
                     }
                 }catch (Exception e){
-                    continue;
+                    // TODO: 2020/1/14  
+                    e.printStackTrace();
                 }
             }
+            objectList.add(object);
         }
-        return object;
+        return objectList;
     }
     private static Map<String,Method> fieldToMethodMap(Class clazz){
         Map<String,Method> fieldToMethodMap = new HashMap<>();
