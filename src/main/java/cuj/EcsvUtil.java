@@ -24,7 +24,12 @@ public class EcsvUtil {
             String[] content = contentIterator.next();
             for(Map.Entry<String,Method> fieldToMethodMapEntry:fieldToMethodMap.entrySet()){
                 try {
-                    fieldToMethodMapEntry.getValue().invoke(object, content[csvHeaderMap.get(fieldToMethodMapEntry.getKey())]);
+                    String parameterType = fieldToMethodMapEntry.getValue().getParameterTypes()[0].toString();
+                    if(parameterType.equalsIgnoreCase("int")){
+                        fieldToMethodMapEntry.getValue().invoke(object, Integer.parseInt(content[csvHeaderMap.get(fieldToMethodMapEntry.getKey())]));
+                    }else {
+                        fieldToMethodMapEntry.getValue().invoke(object, content[csvHeaderMap.get(fieldToMethodMapEntry.getKey())]);
+                    }
                 }catch (Exception e){
                     continue;
                 }
@@ -45,8 +50,6 @@ public class EcsvUtil {
 
         return fieldToMethodMap;
     }
-
-
 
     private static Map<String,Integer> csvHeaderMap(String[] header , Class c){
         Map<String,Integer> csvHeaderMap = new HashMap<>();
