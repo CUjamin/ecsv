@@ -26,14 +26,11 @@ public class EcsvUtil {
             T object = clazz.getConstructor().newInstance();
             for(Map.Entry<String,Method> fieldToMethodMapEntry:fieldToMethodMap.entrySet()){
                 try {
-                    String parameterType = fieldToMethodMapEntry.getValue().getParameterTypes()[0].toString();
-                    if("int".equalsIgnoreCase(parameterType)){
-                        fieldToMethodMapEntry.getValue().invoke(object, Integer.parseInt(content[csvHeaderMap.get(fieldToMethodMapEntry.getKey())]));
-                    }else {
-                        fieldToMethodMapEntry.getValue().invoke(object, content[csvHeaderMap.get(fieldToMethodMapEntry.getKey())]);
-                    }
+                    String contentStr = content[csvHeaderMap.get(fieldToMethodMapEntry.getKey())];
+                    fieldToMethodMapEntry.getValue().invoke(object,DataParseUtil.parseDate(fieldToMethodMapEntry,contentStr));
                 }catch (Exception e){
-                    // TODO: 2020/1/14  
+                    System.out.println("ERROR:"+fieldToMethodMapEntry.getKey());
+                    // TODO: 2020/1/14
                     e.printStackTrace();
                 }
             }
@@ -48,7 +45,7 @@ public class EcsvUtil {
             String methodName = method.getName();
             if (methodName.contains(SET)) {
                 String fieldName = methodName.replace(SET, "").toLowerCase();
-                fieldToMethodMap.put(fieldName,method);
+                fieldToMethodMap.put(fieldName.toLowerCase(),method);
             }
         }
 
@@ -62,7 +59,7 @@ public class EcsvUtil {
             for (Field field : fields) {
                 String name = field.getName();
                 if(name.equalsIgnoreCase(header[i])){
-                    csvHeaderMap.put(name,i);
+                    csvHeaderMap.put(name.toLowerCase(),i);
                 }
             }
         }

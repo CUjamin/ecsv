@@ -6,8 +6,11 @@ package cuj;
  */
 public class Student {
     private String name;
+    private boolean isStudent;
     private int age;
-    private String id;
+    private long id;
+    private float score;
+    private double dt;
 
     public String getName() {
         return name;
@@ -15,6 +18,14 @@ public class Student {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean getIsStudent() {
+        return isStudent;
+    }
+
+    public void setIsStudent(boolean isStudent) {
+        this.isStudent = isStudent;
     }
 
     public int getAge() {
@@ -25,20 +36,39 @@ public class Student {
         this.age = age;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public float getScore() {
+        return score;
+    }
+
+    public void setScore(float score) {
+        this.score = score;
+    }
+
+    public double getDt() {
+        return dt;
+    }
+
+    public void setDt(double dt) {
+        this.dt = dt;
     }
 
     @Override
     public String toString() {
         return "Student{" +
                 "name='" + name + '\'' +
+                ", isStudent=" + isStudent +
                 ", age=" + age +
-                ", id='" + id + '\'' +
+                ", id=" + id +
+                ", score=" + score +
+                ", dt=" + dt +
                 '}';
     }
 }
