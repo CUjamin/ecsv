@@ -6,6 +6,11 @@ csv文件解析库
 
 开发中...
 
+## 2020.3.14 增加支持 csv文件 转 Object List 方法
+
+EcsvUtil.parseFile2ObjectList(String filePath, Class<T> clazz);
+EcsvUtil.parseFile2ObjectList(File csvFile, Class<T> clazz)
+
 ## 2020.3.13 增加基本类型的支持
 
 DataParseUtil

@@ -15,8 +15,13 @@ import java.util.*;
 public class CsvFileUtil {
 
     public static List<String[]> readCsvFile(String filePath) throws IOException{
-        File file = new File(filePath);
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "utf-8"));
+        File csvfile = new File(filePath);
+        return readCsvFile(csvfile);
+    }
+
+    public static List<String[]> readCsvFile(File csvfile) throws IOException{
+
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(csvfile), "utf-8"));
 
         CSVFormat csvFormat = CSVFormat.DEFAULT.withSkipHeaderRecord();
         CSVParser csvParser = new CSVParser(bufferedReader, csvFormat);

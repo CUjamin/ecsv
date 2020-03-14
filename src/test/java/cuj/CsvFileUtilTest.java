@@ -28,10 +28,11 @@ public class CsvFileUtilTest {
     @Test
     public void writerCsvFile() throws IOException {
         List<String[]> stringList = new LinkedList<>();
-        String[] header = {"name", "age", "id"};
-        String[] xiaoming = {"xiaoming", "20", "a1s2"};
+        String[] header = {"name","isStudent","age","id","score","dt"};
+        
+        String[] xiaoming = {"xiaoming","true","20","100000000000","0.1","0.01"};
         stringList.add(xiaoming);
-        String[] xiaozzhang = {"xiaozhang", "21", "wwwww"};
+        String[] xiaozzhang = {"xiaozhang","false","21","100000000001","0.2","0.02"};
         stringList.add(xiaozzhang);
         CsvFileUtil.writerCsvFile(header, stringList, "test.csv");
     }
