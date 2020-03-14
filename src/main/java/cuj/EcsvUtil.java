@@ -1,7 +1,9 @@
 package cuj;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -12,16 +14,24 @@ import java.util.*;
 public class EcsvUtil {
     private static final String SET = "set";
 
-    public static <T> List<T> parseFile2ObjectList(String filePath, Class<T> clazz)throws Exception{
+    public static <T> List<T> parseFile2ObjectList(String filePath, Class<T> clazz)
+            throws IOException,
+            NoSuchMethodException, SecurityException,
+            InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
         List<String[]> contentList = CsvFileUtil.readCsvFile(filePath);
         return parse2ObjectList(contentList,clazz);
     }
 
-    public static <T> List<T> parseFile2ObjectList(File csvFile, Class<T> clazz)throws Exception{
+    public static <T> List<T> parseFile2ObjectList(File csvFile, Class<T> clazz)
+            throws IOException,
+            NoSuchMethodException, SecurityException,
+            InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
         List<String[]> contentList = CsvFileUtil.readCsvFile(csvFile);
         return parse2ObjectList(contentList,clazz);
     }
-    public static <T> List<T> parse2ObjectList(List<String[]> contentList,Class<T> clazz)throws Exception{
+    public static <T> List<T> parse2ObjectList(List<String[]> contentList,Class<T> clazz)
+            throws NoSuchMethodException, SecurityException,
+            InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         List<T> objectList = new LinkedList<>();
 
         if(1>=contentList.size()){
