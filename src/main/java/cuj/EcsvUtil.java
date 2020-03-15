@@ -11,7 +11,6 @@ import java.util.*;
  * @date 2020/1/11
  */
 public class EcsvUtil {
-    private static final String SET = "set";
 
     public static <T> List<T> parseFile2ObjectList(String filePath, Class<T> clazz)
             throws IOException,
@@ -36,7 +35,7 @@ public class EcsvUtil {
         if(1>=contentList.size()){
             return objectList;
         }
-        Map<String,Method> fieldToMethodMap = fieldToMethodMap(clazz);
+        Map<String,Method> fieldToSetMethodMap = fieldToSetMethodMap(clazz);
 
         Iterator<String[]> contentIterator = contentList.iterator();
         String[] header = contentIterator.next();
@@ -44,13 +43,11 @@ public class EcsvUtil {
         while (contentIterator.hasNext()){
             String[] content = contentIterator.next();
             T object = clazz.getConstructor().newInstance();
-            for(Map.Entry<String,Method> fieldToMethodMapEntry:fieldToMethodMap.entrySet()){
+            for(Map.Entry<String,Method> fieldToMethodMapEntry:fieldToSetMethodMap.entrySet()){
                 try {
                     String contentStr = content[csvHeaderMap.get(fieldToMethodMapEntry.getKey())];
                     fieldToMethodMapEntry.getValue().invoke(object,DataParseUtil.parseDate(fieldToMethodMapEntry,contentStr));
                 }catch (Exception e){
-                    System.out.println("ERROR:"+fieldToMethodMapEntry.getKey());
-                    // TODO: 2020/1/14
                     e.printStackTrace();
                 }
             }
@@ -58,14 +55,48 @@ public class EcsvUtil {
         }
         return objectList;
     }
-    private static Map<String,Method> fieldToMethodMap(Class clazz){
-        Map<String,Method> fieldToMethodMap = new HashMap<>();
+
+    public static <T> void writeCSVFile(List<T> objectList,String filePath,Class clazz)
+            throws IOException,IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+        List<String[]> contentList = new ArrayList<>(objectList.size()+1);
+        String[] header = CsvFileUtil.csvHeaderContent(clazz);
+        contentList.add(header);
+        Map<String, Integer> csvHeaderMap = CsvFileUtil.csvHeaderMap(clazz);
+        Map<String,Method> fieldToGetMethodMap = fieldToGetMethodMap(clazz);
+        for(T object:objectList){
+            contentList.add(content(object,csvHeaderMap,fieldToGetMethodMap));
+        }
+        CsvFileUtil.writerCsvFile(header,contentList,filePath);
+    }
+    private static <T> String[] content(T object,Map<String, Integer> csvHeaderMap,Map<String,Method> fieldToGetMethodMap)
+            throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+        String[] content = new String[fieldToGetMethodMap.size()];
+        for(Map.Entry<String,Method> methodEntry:fieldToGetMethodMap.entrySet()){
+            Object data = methodEntry.getValue().invoke(object);
+            String dataStr = DataParseUtil.parseDate2Str(methodEntry,data);
+            content[csvHeaderMap.get(methodEntry.getKey())] = dataStr;
+        }
+        return content;
+    }
+
+
+    private static final String SET = "set";
+    private static Map<String,Method> fieldToSetMethodMap(Class clazz){
+        return fieldToMethodMap(clazz,SET);
+    }
+
+    private static final String GET = "get";
+    private static Map<String,Method> fieldToGetMethodMap(Class clazz) {
+        return fieldToMethodMap(clazz,GET);
+    }
+    private static Map<String,Method> fieldToMethodMap(Class clazz,String mothodType) {
+        Map<String, Method> fieldToMethodMap = new HashMap<>();
         Method[] methods = clazz.getDeclaredMethods();
-        for(Method method:methods){
+        for (Method method : methods) {
             String methodName = method.getName();
-            if (methodName.contains(SET)) {
-                String fieldName = methodName.replace(SET, "").toLowerCase();
-                fieldToMethodMap.put(fieldName.toLowerCase(),method);
+            if (methodName.contains(mothodType)) {
+                String fieldName = methodName.replace(mothodType, "").toLowerCase();
+                fieldToMethodMap.put(fieldName.toLowerCase(), method);
             }
         }
 

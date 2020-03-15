@@ -60,7 +60,7 @@ public class CsvFileUtilTest {
         stringList.add(xiaoming);
         String[] xiaozzhang = {"xiaozhang","false","21","100000000001","0.2","0.02"};
         stringList.add(xiaozzhang);
-        CsvFileUtil.writerCsvFile(header, stringList, "test.csv");
+        CsvFileUtil.writerCsvFile(header, stringList, "test2.csv");
     }
 
 }

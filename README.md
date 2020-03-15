@@ -6,10 +6,19 @@ csv文件解析库
 
 开发中...
 
+将csv文件解析为java对象
+
     List<Student> studentList = EcsvUtil.parseFile2ObjectList(System.getProperty("user.dir") + "/test.csv",Student.class);
     
     List<Student> studentList = EcsvUtil.parseFile2ObjectList(new File(System.getProperty("user.dir") + "/test.csv"),Student.class);
 
+将java对象写成csv文件
+
+    EcsvUtil.writeCSVFile(studentList, "test1.csv",Student.class);
+    
+## 2020.3.15 增加支持 Object List  转 csv文件 方法
+
+EcsvUtil.writeCSVFile(List<T> objectList,String filePath,Class clazz)
 
 ## 2020.3.14 增加支持 csv文件 转 Object List 方法
 

@@ -7,6 +7,7 @@ import org.apache.commons.csv.CSVRecord;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.rmi.MarshalledObject;
 import java.util.*;
 
 /**
@@ -14,29 +15,29 @@ import java.util.*;
  * @date 2020/1/14
  */
 public class CsvFileUtil {
-    public static Map<String, Integer> csvHeaderMap(String filePath, Class c) throws IOException{
+    public static Map<String, Integer> csvHeaderMap(String filePath, Class c) throws IOException {
         return csvHeaderMap(new File(filePath), c);
     }
 
-    public static Map<String, Integer> csvHeaderMap(File csvfile, Class c) throws IOException{
+    public static Map<String, Integer> csvHeaderMap(File csvfile, Class c) throws IOException {
         String[] contentHeader = null;
-        try (BufferedReader bufferedReader = bufferedReader(csvfile)){
+        try (BufferedReader bufferedReader = bufferedReader(csvfile)) {
             List<CSVRecord> csvRecordList = csvRecordList(bufferedReader);
             Iterator<CSVRecord> iterator = csvRecordList.iterator();
             if (iterator.hasNext()) {
                 CSVRecord headerRecord = iterator.next();
                 contentHeader = new String[headerRecord.size()];
-                for(int i=0;i<headerRecord.size();++i){
+                for (int i = 0; i < headerRecord.size(); ++i) {
                     contentHeader[i] = headerRecord.get(i);
                 }
             }
         }
-        return csvHeaderMap(contentHeader,c);
+        return csvHeaderMap(contentHeader, c);
     }
 
     public static Map<String, Integer> csvHeaderMap(String[] contentHeader, Class c) {
         Map<String, Integer> csvHeaderMap = new HashMap<>();
-        if(null==contentHeader){
+        if (null == contentHeader) {
             return csvHeaderMap;
         }
         Field[] fields = c.getDeclaredFields();
@@ -50,6 +51,25 @@ public class CsvFileUtil {
         }
         return csvHeaderMap;
     }
+    public static String[] csvHeaderContent(Class c) {
+        Map<String, Integer> csvHeaderMap = csvHeaderMap(c);
+        String[] csvHeaderContent = new String[csvHeaderMap.size()];
+        for (Map.Entry<String, Integer> csvHeaderMapEntry:csvHeaderMap.entrySet()) {
+            csvHeaderContent[csvHeaderMapEntry.getValue()] = csvHeaderMapEntry.getKey();
+        }
+        return csvHeaderContent;
+    }
+
+    public static Map<String, Integer> csvHeaderMap(Class c) {
+        Map<String, Integer> csvHeaderMap = new HashMap<>();
+
+        Field[] fields = c.getDeclaredFields();
+        for (int i = 0; i < fields.length; ++i) {
+            String name = fields[i].getName();
+            csvHeaderMap.put(name.toLowerCase(), i);
+        }
+        return csvHeaderMap;
+    }
 
     public static Map<String, Integer> csvHeaderMap(String filePath) throws IOException {
         File csvfile = new File(filePath);
@@ -59,7 +79,7 @@ public class CsvFileUtil {
     public static Map<String, Integer> csvHeaderMap(File csvfile) throws IOException {
         Map<String, Integer> headerMap = new HashMap<>();
 
-        try (BufferedReader bufferedReader = bufferedReader(csvfile)){
+        try (BufferedReader bufferedReader = bufferedReader(csvfile)) {
 
             List<CSVRecord> csvRecordList = csvRecordList(bufferedReader);
             Iterator<CSVRecord> iterator = csvRecordList.iterator();
@@ -78,7 +98,7 @@ public class CsvFileUtil {
 
     public static List<String[]> readCsvFile(File csvfile) throws IOException {
         List<String[]> contentList;
-        try (BufferedReader bufferedReader = bufferedReader(csvfile)){
+        try (BufferedReader bufferedReader = bufferedReader(csvfile)) {
             List<CSVRecord> csvRecordList = csvRecordList(bufferedReader);
             contentList = new LinkedList<>();
             Iterator<CSVRecord> iterator = csvRecordList.iterator();
@@ -114,17 +134,13 @@ public class CsvFileUtil {
         return headerMap;
     }
 
-    public static boolean writerCsvFile(String[] header, List<String[]> contentList, String filePath) throws IOException {
-
+    public static void writerCsvFile(String[] header, List<String[]> contentList, String filePath) throws IOException {
         CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader(header).withSkipHeaderRecord();
-
         try (Writer out = new FileWriter(filePath); CSVPrinter printer = new CSVPrinter(out, csvFormat)) {
-            printer.printRecord((Object) header);
-            for (String[] student : contentList) {
-                printer.printRecord((Object) student);
+            for (String[] content : contentList) {
+                printer.printRecord(content);
             }
         }
-        return true;
     }
 
     private static String[] csvRecord2Content(Map<String, Integer> headerMap, CSVRecord csvRecord) {
@@ -134,9 +150,10 @@ public class CsvFileUtil {
         }
         return content;
     }
+
     private static String[] csvRecord2Content(CSVRecord csvRecord) {
         String[] content = new String[csvRecord.size()];
-        for (int i=0;i<csvRecord.size();++i) {
+        for (int i = 0; i < csvRecord.size(); ++i) {
             content[i] = csvRecord.get(i);
         }
         return content;

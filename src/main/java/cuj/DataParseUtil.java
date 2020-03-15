@@ -39,4 +39,29 @@ public class DataParseUtil {
         }
         return data;
     }
+    public static String parseDate2Str(Map.Entry<String, Method> fieldToMethodMapEntry, Object data) {
+        Method method = fieldToMethodMapEntry.getValue();
+        String parameterType = method.getReturnType().toString();
+        String dataStr;
+        switch (parameterType) {
+            case INT:
+                dataStr = Integer.toString((Integer) data);
+                break;
+            case LONG:
+                dataStr = Long.toString((Long) data);
+                break;
+            case DOUBLE:
+                dataStr = Double.toString((Double) data);
+                break;
+            case FLOAT:
+                dataStr = Float.toString((Float) data);
+                break;
+            case BOOLEAN:
+                dataStr = Boolean.toString((Boolean) data);
+                break;
+            default:
+                dataStr = data.toString();
+        }
+        return dataStr;
+    }
 }
