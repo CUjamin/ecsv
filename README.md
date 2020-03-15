@@ -6,6 +6,11 @@ csv文件解析库
 
 开发中...
 
+    List<Student> studentList = EcsvUtil.parseFile2ObjectList(System.getProperty("user.dir") + "/test.csv",Student.class);
+    
+    List<Student> studentList = EcsvUtil.parseFile2ObjectList(new File(System.getProperty("user.dir") + "/test.csv"),Student.class);
+
+
 ## 2020.3.14 增加支持 csv文件 转 Object List 方法
 
 EcsvUtil.parseFile2ObjectList(String filePath, Class<T> clazz);
