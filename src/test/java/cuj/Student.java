@@ -10,7 +10,7 @@ public class Student {
     private int age;
     private long id;
     private float score;
-    private double dt;
+//    private double dt;
 
     public String getName() {
         return name;
@@ -52,13 +52,13 @@ public class Student {
         this.score = score;
     }
 
-    public double getDt() {
-        return dt;
-    }
-
-    public void setDt(double dt) {
-        this.dt = dt;
-    }
+//    public double getDt() {
+//        return dt;
+//    }
+//
+//    public void setDt(double dt) {
+//        this.dt = dt;
+//    }
 
     @Override
     public String toString() {
@@ -68,7 +68,7 @@ public class Student {
                 ", age=" + age +
                 ", id=" + id +
                 ", score=" + score +
-                ", dt=" + dt +
+//                ", dt=" + dt +
                 '}';
     }
 }

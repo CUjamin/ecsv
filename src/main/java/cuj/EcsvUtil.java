@@ -2,7 +2,6 @@ package cuj;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -41,7 +40,7 @@ public class EcsvUtil {
 
         Iterator<String[]> contentIterator = contentList.iterator();
         String[] header = contentIterator.next();
-        Map<String,Integer> csvHeaderMap = csvHeaderMap(header,clazz);
+        Map<String,Integer> csvHeaderMap = CsvFileUtil.csvHeaderMap(header,clazz);
         while (contentIterator.hasNext()){
             String[] content = contentIterator.next();
             T object = clazz.getConstructor().newInstance();
@@ -71,19 +70,5 @@ public class EcsvUtil {
         }
 
         return fieldToMethodMap;
-    }
-
-    private static Map<String,Integer> csvHeaderMap(String[] header , Class c){
-        Map<String,Integer> csvHeaderMap = new HashMap<>();
-        Field[] fields = c.getDeclaredFields();
-        for(int i=0;i<header.length;++i) {
-            for (Field field : fields) {
-                String name = field.getName();
-                if(name.equalsIgnoreCase(header[i])){
-                    csvHeaderMap.put(name.toLowerCase(),i);
-                }
-            }
-        }
-        return csvHeaderMap;
     }
 }

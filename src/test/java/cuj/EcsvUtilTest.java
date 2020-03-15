@@ -2,10 +2,9 @@ package cuj;
 
 import org.junit.Test;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * @author cujamin
@@ -23,11 +22,30 @@ public class EcsvUtilTest {
         String[] xiaozzhang = {"xiaozhang","false","21","100000000001","0.2","0.02"};
         stringList.add(xiaozzhang);
 
-        List<Student> studentList = EcsvUtil.parse2Object(stringList,Student.class);
+        List<Student> studentList = EcsvUtil.parse2ObjectList(stringList,Student.class);
         System.out.println(studentList.size());
         for(Student student:studentList){
             System.out.println(student);
         }
+    }
 
+    @Test
+    public void parseFile2ObjectList() throws Exception{
+
+        List<Student> studentList = EcsvUtil.parseFile2ObjectList(System.getProperty("user.dir") + "/test.csv",Student.class);
+        System.out.println(studentList.size());
+        for(Student student:studentList){
+            System.out.println(student);
+        }
+    }
+
+    @Test
+    public void parseFile2ObjectList1() throws Exception{
+
+        List<Student> studentList = EcsvUtil.parseFile2ObjectList(new File(System.getProperty("user.dir") + "/test.csv"),Student.class);
+        System.out.println(studentList.size());
+        for(Student student:studentList){
+            System.out.println(student);
+        }
     }
 }
