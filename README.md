@@ -16,6 +16,9 @@ csv文件解析库
 
     EcsvUtil.writeCSVFile(studentList, "test1.csv",Student.class);
     
+
+## 2020.3.21 增加注解功能，需要进一步完善
+
 ## 2020.3.15 增加支持 Object List  转 csv文件 方法
 
 EcsvUtil.writeCSVFile(List<T> objectList,String filePath,Class clazz)
