@@ -16,6 +16,7 @@ csv文件解析库
 
     EcsvUtil.writeCSVFile(studentList, "test1.csv",Student.class);
     
+## 2020.3.22 支持通过注解get、set方法，实现读写文件时分别对应不同的列名
 
 ## 2020.3.21 增加注解功能，需要进一步完善
 
