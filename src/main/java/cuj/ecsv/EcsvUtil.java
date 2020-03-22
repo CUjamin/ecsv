@@ -115,6 +115,6 @@ public class EcsvUtil {
         if (null == parameter) {
             return method.getName();
         }
-        return parameter.name();
+        return parameter.column();
     }
 }

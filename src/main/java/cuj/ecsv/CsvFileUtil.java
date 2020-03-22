@@ -182,6 +182,6 @@ public class CsvFileUtil {
             return field.getName();
         }
 
-        return parameter.name();
+        return parameter.column();
     }
 }

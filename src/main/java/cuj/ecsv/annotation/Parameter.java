@@ -13,5 +13,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PARAMETER,ElementType.METHOD,ElementType.FIELD})
 public @interface Parameter {
-    String name();
+    String column();
+
+    String readColumn();
+
+    String writeColumn();
 }

@@ -7,7 +7,8 @@ import cuj.ecsv.annotation.Parameter;
  * @date 2020/1/12
  */
 public class Student {
-    @Parameter(name = "NNNNNN")
+
+    @Parameter(column = "NNNNNN")
     private String name;
     private boolean isStudent;
     private int age;
@@ -15,12 +16,12 @@ public class Student {
     private float score;
     private double dt;
 
-    @Parameter(name = "NNNNNN")
+    @Parameter(column = "NNNNNN")
     public String getName() {
         return name;
     }
 
-    @Parameter(name = "NNNNNN")
+    @Parameter(column = "NNNNNN")
     public void setName(String name) {
         this.name = name;
     }
