@@ -1,7 +1,5 @@
 package cuj.ecsv;
 
-import cuj.ecsv.annotation.Parameter;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -102,7 +100,7 @@ public class EcsvUtil {
         for (Method method : methods) {
             String methodName = method.getName();
             if (methodName.contains(mothodType)) {
-                methodName = methodName(method);
+                methodName = ColumnUtil.readColumeName(method);
                 String fieldName = methodName.replace(mothodType, "").toLowerCase();
                 fieldToMethodMap.put(fieldName.toLowerCase(), method);
             }
@@ -110,11 +108,4 @@ public class EcsvUtil {
         return fieldToMethodMap;
     }
 
-    public static String methodName(Method method) {
-        Parameter parameter = method.getAnnotation(Parameter.class);
-        if (null == parameter) {
-            return method.getName();
-        }
-        return parameter.column();
-    }
 }

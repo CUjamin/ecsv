@@ -1,6 +1,6 @@
 package cuj.ecsv;
 
-import cuj.ecsv.annotation.Parameter;
+import cuj.ecsv.annotation.Column;
 
 /**
  * @author cujamin
@@ -8,7 +8,7 @@ import cuj.ecsv.annotation.Parameter;
  */
 public class Student {
 
-    @Parameter(column = "NNNNNN")
+    @Column(name = "NNNNNN")
     private String name;
     private boolean isStudent;
     private int age;
@@ -16,12 +16,12 @@ public class Student {
     private float score;
     private double dt;
 
-    @Parameter(column = "NNNNNN")
+    @Column(name = "NNNNNN")
     public String getName() {
         return name;
     }
 
-    @Parameter(column = "NNNNNN")
+    @Column(name = "NNNNNN")
     public void setName(String name) {
         this.name = name;
     }

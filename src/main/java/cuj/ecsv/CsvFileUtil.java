@@ -1,6 +1,5 @@
 package cuj.ecsv;
 
-import cuj.ecsv.annotation.Parameter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
@@ -43,7 +42,7 @@ public class CsvFileUtil {
         Field[] fields = c.getDeclaredFields();
         for (int i = 0; i < contentHeader.length; ++i) {
             for (Field field : fields) {
-                String name = fieldName(field);
+                String name = ColumnUtil.fieldName(field);
                 if (name.equalsIgnoreCase(contentHeader[i])) {
                     csvHeaderMap.put(name.toLowerCase(), i);
                 }
@@ -59,7 +58,7 @@ public class CsvFileUtil {
         Field[] fields = c.getDeclaredFields();
         for (int i = 0; i < contentHeader.length; ++i) {
             for (Field field : fields) {
-                String name = fieldName(field);
+                String name = ColumnUtil.fieldName(field);
                 if (name.equalsIgnoreCase(contentHeader[i])) {
                     csvHeaderMap.put(name.toLowerCase(), i);
                 }
@@ -82,7 +81,7 @@ public class CsvFileUtil {
 
         Field[] fields = c.getDeclaredFields();
         for (int i = 0; i < fields.length; ++i) {
-            String name = fieldName(fields[i]);
+            String name = ColumnUtil.fieldName(fields[i]);
             csvHeaderMap.put(name.toLowerCase(), i);
         }
         return csvHeaderMap;
@@ -174,14 +173,5 @@ public class CsvFileUtil {
             content[i] = csvRecord.get(i);
         }
         return content;
-    }
-
-    public static String fieldName(Field field){
-        Parameter parameter = field.getAnnotation(Parameter.class);
-        if(null==parameter){
-            return field.getName();
-        }
-
-        return parameter.column();
     }
 }

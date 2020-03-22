@@ -7,15 +7,10 @@ import java.lang.annotation.Target;
 
 /**
  * @author cujamin
- * @date 2020/3/21
+ * @date 2020/3/22
  */
-
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.PARAMETER,ElementType.METHOD,ElementType.FIELD})
-public @interface Parameter {
-    String column();
-
-    String readColumn();
-
-    String writeColumn();
+public @interface Column {
+    String name();
 }

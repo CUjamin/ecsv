@@ -1,6 +1,6 @@
 package cuj.ecsv;
 
-import com.alibaba.fastjson.annotation.JSONField;
+//import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  * @author cujamin
@@ -8,6 +8,6 @@ import com.alibaba.fastjson.annotation.JSONField;
  */
 public class Test {
 
-    @JSONField
+//    @JSONField
     private String id;
 }
