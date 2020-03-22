@@ -80,6 +80,6 @@ public class EcsvUtilTest {
         student2.setScore(0.2F);
         studentList.add(student2);
 
-        EcsvUtil.writeCSVFile(studentList, "test1.csv",Student.class);
+        EcsvUtil.writeCSVFile(studentList, "test2.csv",Student.class);
     }
 }

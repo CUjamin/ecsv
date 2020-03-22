@@ -8,7 +8,6 @@ import cuj.ecsv.annotation.Column;
  */
 public class Student {
 
-    @Column(name = "NNNNNN")
     private String name;
     private boolean isStudent;
     private int age;
@@ -16,12 +15,12 @@ public class Student {
     private float score;
     private double dt;
 
-    @Column(name = "NNNNNN")
+    @Column(name = "xxxxxxxxx")
     public String getName() {
         return name;
     }
 
-    @Column(name = "NNNNNN")
+    @Column(name = "nnn")
     public void setName(String name) {
         this.name = name;
     }

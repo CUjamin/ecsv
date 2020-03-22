@@ -36,7 +36,7 @@ public class EcsvUtil {
         if (1 >= contentList.size()) {
             return objectList;
         }
-        Map<String, Method> fieldToSetMethodMap = fieldToSetMethodMap(clazz);
+        Map<String, Method> columnToSetMethodMap = ColumnUtil.columnToSetMethodMap(clazz);
 
         Iterator<String[]> contentIterator = contentList.iterator();
         String[] header = contentIterator.next();
@@ -44,10 +44,10 @@ public class EcsvUtil {
         while (contentIterator.hasNext()) {
             String[] content = contentIterator.next();
             T object = clazz.getConstructor().newInstance();
-            for (Map.Entry<String, Method> fieldToMethodMapEntry : fieldToSetMethodMap.entrySet()) {
+            for (Map.Entry<String, Method> columnToSetMethodMapEntry : columnToSetMethodMap.entrySet()) {
                 try {
-                    String contentStr = content[csvHeaderMap.get(fieldToMethodMapEntry.getKey())];
-                    fieldToMethodMapEntry.getValue().invoke(object, DataParseUtil.parseDate(fieldToMethodMapEntry, contentStr));
+                    String contentStr = content[csvHeaderMap.get(columnToSetMethodMapEntry.getKey())];
+                    columnToSetMethodMapEntry.getValue().invoke(object, DataParseUtil.parseDate(columnToSetMethodMapEntry, contentStr));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -63,49 +63,21 @@ public class EcsvUtil {
         String[] header = CsvFileUtil.csvHeaderContent(clazz);
         contentList.add(header);
         Map<String, Integer> csvHeaderMap = CsvFileUtil.csvHeaderMap(clazz);
-        Map<String, Method> fieldToGetMethodMap = fieldToGetMethodMap(clazz);
+        Map<String, Method> columnToGetMethodMap = ColumnUtil.columnToGetMethodMap(clazz);
         for (T object : objectList) {
-            contentList.add(content(object, csvHeaderMap, fieldToGetMethodMap));
+            contentList.add(content(object, csvHeaderMap, columnToGetMethodMap));
         }
         CsvFileUtil.writerCsvFile(header, contentList, filePath);
     }
 
-    private static <T> String[] content(T object, Map<String, Integer> csvHeaderMap, Map<String, Method> fieldToGetMethodMap)
+    private static <T> String[] content(T object, Map<String, Integer> csvHeaderMap, Map<String, Method> columnToGetMethodMap)
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        String[] content = new String[fieldToGetMethodMap.size()];
-        for (Map.Entry<String, Method> methodEntry : fieldToGetMethodMap.entrySet()) {
+        String[] content = new String[columnToGetMethodMap.size()];
+        for (Map.Entry<String, Method> methodEntry : columnToGetMethodMap.entrySet()) {
             Object data = methodEntry.getValue().invoke(object);
             String dataStr = DataParseUtil.parseDate2Str(methodEntry, data);
             content[csvHeaderMap.get(methodEntry.getKey())] = dataStr;
         }
         return content;
     }
-
-
-    private static final String SET = "set";
-
-    private static Map<String, Method> fieldToSetMethodMap(Class clazz) {
-        return fieldToMethodMap(clazz, SET);
-    }
-
-    private static final String GET = "get";
-
-    private static Map<String, Method> fieldToGetMethodMap(Class clazz) {
-        return fieldToMethodMap(clazz, GET);
-    }
-
-    private static Map<String, Method> fieldToMethodMap(Class clazz, String mothodType) {
-        Map<String, Method> fieldToMethodMap = new HashMap<>();
-        Method[] methods = clazz.getDeclaredMethods();
-        for (Method method : methods) {
-            String methodName = method.getName();
-            if (methodName.contains(mothodType)) {
-                methodName = ColumnUtil.readColumeName(method);
-                String fieldName = methodName.replace(mothodType, "").toLowerCase();
-                fieldToMethodMap.put(fieldName.toLowerCase(), method);
-            }
-        }
-        return fieldToMethodMap;
-    }
-
 }
