@@ -32,7 +32,7 @@ public class EcsvUtilTest {
     @Test
     public void parseFile2ObjectList() throws Exception{
 
-        List<Student> studentList = EcsvUtil.parseFile2ObjectList(System.getProperty("user.dir") + "/test.csv",Student.class);
+        List<Student> studentList = EcsvUtil.readFile2ObjectList(System.getProperty("user.dir") + "/test.csv",Student.class);
         System.out.println(studentList.size());
         for(Student student:studentList){
             System.out.println(student);
@@ -41,8 +41,7 @@ public class EcsvUtilTest {
 
     @Test
     public void parseFile2ObjectList1() throws Exception{
-
-        List<Student> studentList = EcsvUtil.parseFile2ObjectList(new File(System.getProperty("user.dir") + "/test1.csv"),Student.class);
+        List<Student> studentList = EcsvUtil.readFile2ObjectList(new File(System.getProperty("user.dir") + "/test.csv"),Student.class);
         System.out.println(studentList.size());
         for(Student student:studentList){
             System.out.println(student);
@@ -51,16 +50,6 @@ public class EcsvUtilTest {
 
     @Test
     public void writeCSVFile() throws Exception{
-        List<String[]> stringList = new LinkedList<>();
-        String[] header = {"name","isStudent","age","id","score","dt"};
-
-        String[] xiaoming = {"xiaoming","true","20","100000000000","0.1","0.01"};
-        stringList.add(xiaoming);
-        String[] xiaozzhang = {"xiaozhang","false","21","100000000001","0.2","0.02"};
-        stringList.add(xiaozzhang);
-
-
-
         List<Student> studentList = new LinkedList<>();
         Student student1 = new Student();
         student1.setName("xiaoming");
@@ -80,6 +69,6 @@ public class EcsvUtilTest {
         student2.setScore(0.2F);
         studentList.add(student2);
 
-        EcsvUtil.writeCSVFile(studentList, "test2.csv",Student.class);
+        EcsvUtil.writeCsvFile(studentList, "test.csv",Student.class);
     }
 }

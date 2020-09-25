@@ -14,13 +14,10 @@ public class Student {
     private long id;
     private float score;
     private double dt;
-
-    @Column(name = "xxxxxxxxx")
+    private String aaa;
     public String getName() {
         return name;
     }
-
-    @Column(name = "nnn")
     public void setName(String name) {
         this.name = name;
     }

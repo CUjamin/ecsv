@@ -6,6 +6,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -39,15 +40,13 @@ public class CsvFileUtil {
         if (null == contentHeader) {
             return csvHeaderMap;
         }
-        Method[] methods = clazz.getDeclaredMethods();
+        Field[] fields = ColumnUtil.getObjectFields(clazz);
         for (int i = 0; i < contentHeader.length; ++i) {
-            for (Method method : methods) {
-                String methodName = method.getName();
-                if (methodName.contains(ColumnUtil.SET)) {
-                    String columnName = ColumnUtil.readColumnName(method,ColumnUtil.SET);
-                    if (columnName.equalsIgnoreCase(contentHeader[i])) {
-                        csvHeaderMap.put(columnName.toLowerCase(), i);
-                    }
+            for (Field field : fields) {
+                String fieldName = field.getName();
+                if (fieldName.equals(contentHeader[i])) {
+                    csvHeaderMap.put(fieldName, i);
+                    continue;
                 }
             }
         }
@@ -57,7 +56,7 @@ public class CsvFileUtil {
     public static String[] csvHeaderContent(Class c) {
         Map<String, Integer> csvHeaderMap = csvHeaderMap(c);
         String[] csvHeaderContent = new String[csvHeaderMap.size()];
-        for (Map.Entry<String, Integer> csvHeaderMapEntry:csvHeaderMap.entrySet()) {
+        for (Map.Entry<String, Integer> csvHeaderMapEntry : csvHeaderMap.entrySet()) {
             csvHeaderContent[csvHeaderMapEntry.getValue()] = csvHeaderMapEntry.getKey();
         }
         return csvHeaderContent;
@@ -65,20 +64,17 @@ public class CsvFileUtil {
 
     public static Map<String, Integer> csvHeaderMap(Class clazz) {
         Map<String, Integer> csvHeaderMap = new HashMap<>();
-        Method[] methods = clazz.getDeclaredMethods();
-        int array = 0;
-        for (int i = 0; i < methods.length; ++i) {
-            if (methods[i].getName().contains(ColumnUtil.GET)) {
-                String columnName = ColumnUtil.readColumnName(methods[i], ColumnUtil.GET);
-                csvHeaderMap.put(columnName.toLowerCase(), array++);
-            }
+        Field[] fields = ColumnUtil.getObjectFields(clazz);
+        for (int columnIndex = 0; columnIndex < fields.length; ++columnIndex) {
+            String columnName = fields[columnIndex].getName();
+            csvHeaderMap.put(columnName, columnIndex);
         }
         return csvHeaderMap;
     }
 
     public static Map<String, Integer> csvHeaderMap(String filePath) throws IOException {
-        File csvfile = new File(filePath);
-        return csvHeaderMap(csvfile);
+        File csvFile = new File(filePath);
+        return csvHeaderMap(csvFile);
     }
 
     public static Map<String, Integer> csvHeaderMap(File csvfile) throws IOException {
