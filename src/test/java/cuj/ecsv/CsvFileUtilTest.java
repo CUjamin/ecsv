@@ -25,8 +25,8 @@ public class CsvFileUtilTest {
     @Test
     public void csvHeaderMap() throws IOException {
         writerCsvFile();
-        String filePath = System.getProperty("user.dir") + "/test.csv";
-        Map<String, Integer> csvHeaderMap = CsvFileUtil.csvHeaderMap(filePath,Student.class);
+        String filePath = System.getProperty("user.dir") + "/StudentCsv.csv";
+        Map<String, Integer> csvHeaderMap = CsvFileUtil.csvHeaderMap(filePath,StudentCsv.class);
         System.out.println(csvHeaderMap);
     }
 
@@ -41,7 +41,7 @@ public class CsvFileUtilTest {
     @Test
     public void readCsvFile() throws IOException {
         writerCsvFile();
-        String filePath = System.getProperty("user.dir") + "/test.csv";
+        String filePath = System.getProperty("user.dir") + "/StudentCsv.csv";
         List<String[]> lineList = CsvFileUtil.readCsvFile(filePath);
         for (String[] line : lineList) {
             System.out.println(line[0]);
@@ -57,7 +57,7 @@ public class CsvFileUtilTest {
         stringList.add(xiaoming);
         String[] xiaozzhang = {"xiaozhang","false","21","100000000001","0.2","0.02"};
         stringList.add(xiaozzhang);
-        CsvFileUtil.writerCsvFile(header, stringList, "test.csv");
+        CsvFileUtil.writerCsvFile(header, stringList, "StudentCsv.csv");
     }
 
 }

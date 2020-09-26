@@ -3,6 +3,7 @@ package cuj.ecsv;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,15 +12,13 @@ import java.util.Map;
  */
 public class ColumnUtil {
 
-    public static Field[] getObjectFields(Class clazz){
-        return clazz.getDeclaredFields();
-    }
+
 
     public static <T> String[] content(T object, Map<String, Integer> csvHeaderMap, Class clazz)
             throws IllegalAccessException, IllegalArgumentException {
-        Field[] fields = ColumnUtil.getObjectFields(clazz);
-        String[] content = new String[fields.length];
-        for (Field field: fields) {
+        List<Field> fieldList = FieldUtil.getObjectFieldList(clazz);
+        String[] content = new String[fieldList.size()];
+        for (Field field: fieldList) {
             String dataStr = FieldUtil.getFieldValueStr(object,field);
             content[csvHeaderMap.get(field.getName())] = dataStr;
         }

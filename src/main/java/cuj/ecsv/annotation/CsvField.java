@@ -10,7 +10,6 @@ import java.lang.annotation.Target;
  * @date 2020/3/22
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.PARAMETER,ElementType.METHOD,ElementType.FIELD})
-public @interface Column {
-    String name();
+@Target({ElementType.FIELD})
+public @interface CsvField {
 }

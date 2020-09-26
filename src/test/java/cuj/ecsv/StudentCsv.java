@@ -1,13 +1,13 @@
 package cuj.ecsv;
 
-import cuj.ecsv.annotation.Column;
+import cuj.ecsv.annotation.Csv;
 
 /**
  * @author cujamin
- * @date 2020/1/12
+ * @date 2020/9/26
  */
-public class Student {
-
+@Csv
+class StudentCsv {
     private String name;
     private boolean isStudent;
     private int age;
@@ -15,9 +15,14 @@ public class Student {
     private float score;
     private double dt;
     private String aaa;
+
+    public StudentCsv() {
+    }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -26,8 +31,8 @@ public class Student {
         return isStudent;
     }
 
-    public void setIsStudent(boolean isStudent) {
-        this.isStudent = isStudent;
+    public void setIsStudent(boolean student) {
+        isStudent = student;
     }
 
     public int getAge() {
@@ -60,6 +65,14 @@ public class Student {
 
     public void setDt(double dt) {
         this.dt = dt;
+    }
+
+    public String getAaa() {
+        return aaa;
+    }
+
+    public void setAaa(String aaa) {
+        this.aaa = aaa;
     }
 
     @Override

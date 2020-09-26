@@ -40,13 +40,12 @@ public class CsvFileUtil {
         if (null == contentHeader) {
             return csvHeaderMap;
         }
-        Field[] fields = ColumnUtil.getObjectFields(clazz);
+        List<Field> fieldList = FieldUtil.getObjectFieldList(clazz);
         for (int i = 0; i < contentHeader.length; ++i) {
-            for (Field field : fields) {
+            for (Field field : fieldList) {
                 String fieldName = field.getName();
                 if (fieldName.equals(contentHeader[i])) {
                     csvHeaderMap.put(fieldName, i);
-                    continue;
                 }
             }
         }
@@ -64,9 +63,9 @@ public class CsvFileUtil {
 
     public static Map<String, Integer> csvHeaderMap(Class clazz) {
         Map<String, Integer> csvHeaderMap = new HashMap<>();
-        Field[] fields = ColumnUtil.getObjectFields(clazz);
-        for (int columnIndex = 0; columnIndex < fields.length; ++columnIndex) {
-            String columnName = fields[columnIndex].getName();
+        List<Field> fieldList = FieldUtil.getObjectFieldList(clazz);
+        for (int columnIndex = 0; columnIndex < fieldList.size(); ++columnIndex) {
+            String columnName = fieldList.get(columnIndex).getName();
             csvHeaderMap.put(columnName, columnIndex);
         }
         return csvHeaderMap;
