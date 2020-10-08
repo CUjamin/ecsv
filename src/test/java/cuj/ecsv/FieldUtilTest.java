@@ -1,7 +1,5 @@
 package cuj.ecsv;
 
-import cuj.ecsv.annotation.Csv;
-import cuj.ecsv.annotation.CsvField;
 import org.junit.Assert;
 import org.junit.Test;
 

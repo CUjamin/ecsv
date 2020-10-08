@@ -1,7 +1,6 @@
 package cuj.ecsv;
 
-import cuj.ecsv.annotation.CsvField;
-import cuj.ecsv.annotation.Csv;
+import cuj.ecsv.annotation.CsvExcept;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -96,25 +95,19 @@ public class FieldUtil {
         return valueStr;
     }
 
-    public static List<Field> getObjectFieldList(Class clazz) {
-        if(clazz.isAnnotationPresent(Csv.class)){
-            return getObjectFields(clazz);
-        }
-        return getObjectAnnotationFields(clazz);
-    }
-
     private static List<Field> getObjectFields(Class clazz) {
         Field[] fields = clazz.getDeclaredFields();
         return Arrays.asList(fields.clone());
     }
 
-    private static List<Field> getObjectAnnotationFields(Class clazz) {
+    public static List<Field> getObjectFieldList(Class clazz) {
         Field[] fields = clazz.getDeclaredFields();
         List<Field> fieldList = new LinkedList<>();
         for (Field field : fields) {
-            if(field.isAnnotationPresent(CsvField.class)){
-                fieldList.add(field);
+            if (field.isAnnotationPresent(CsvExcept.class)) {
+                continue;
             }
+            fieldList.add(field);
         }
         return fieldList;
     }

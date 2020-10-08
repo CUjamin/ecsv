@@ -1,12 +1,9 @@
 package cuj.ecsv;
 
-import cuj.ecsv.annotation.Csv;
-
 /**
  * @author cujamin
  * @date 2020/9/26
  */
-@Csv
 class StudentCsv {
     private String name;
     private boolean isStudent;

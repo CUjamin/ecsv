@@ -7,9 +7,9 @@ import java.lang.annotation.Target;
 
 /**
  * @author cujamin
- * @date 2020/3/22
+ * @date 2020/10/8
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface CsvField {
+public @interface CsvExcept {
 }

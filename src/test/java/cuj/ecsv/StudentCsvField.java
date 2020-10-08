@@ -1,6 +1,6 @@
 package cuj.ecsv;
 
-import cuj.ecsv.annotation.CsvField;
+import cuj.ecsv.annotation.CsvExcept;
 
 /**
  * @author cujamin
@@ -10,14 +10,16 @@ class StudentCsvField {
     public StudentCsvField() {
     }
 
-    @CsvField
     private String name;
     private boolean isStudent;
     private int age;
     private long id;
     private float score;
+
+    @CsvExcept
     private double dt;
-    @CsvField
+
+    @CsvExcept
     private String aaa;
 
     public String getName() {
